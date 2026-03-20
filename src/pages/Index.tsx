@@ -1,3 +1,25 @@
+const CREATE_PAYMENT_URL = "https://functions.poehali.dev/1eb2a9be-2418-421d-922a-b10b47d80696";
+
+async function handleBuy(amount: string, description: string) {
+  try {
+    const res = await fetch(CREATE_PAYMENT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount,
+        description,
+        return_url: window.location.origin + "?payment=success",
+      }),
+    });
+    const data = await res.json();
+    if (data.confirmation_url) {
+      window.location.href = data.confirmation_url;
+    }
+  } catch {
+    alert("Ошибка при создании платежа. Попробуйте ещё раз.");
+  }
+}
+
 export default function Index() {
   return (
     <>
@@ -91,6 +113,13 @@ export default function Index() {
                 <p style={{ fontSize: "14px", color: "#666" }}>
                   Тройной смэш из мраморной говядины, фирменный соус, маринованные огурцы на бриоши.
                 </p>
+                <button
+                  className="btn-cta"
+                  style={{ marginTop: "16px", width: "100%", background: "var(--primary)", color: "white" }}
+                  onClick={() => handleBuy("1400.00", "Классика — Красти Краб")}
+                >
+                  Купить — 1 400 ₽
+                </button>
               </div>
             </div>
 
@@ -116,6 +145,13 @@ export default function Index() {
                   <span className="price">1 800 ₽</span>
                 </div>
                 <p style={{ fontSize: "14px", color: "#666" }}>Двойная пепперони, острый мёд, тесто на закваске.</p>
+                <button
+                  className="btn-cta"
+                  style={{ marginTop: "16px", width: "100%", background: "var(--primary)", color: "white" }}
+                  onClick={() => handleBuy("1800.00", "Электро Пепперони — Красти Краб")}
+                >
+                  Купить — 1 800 ₽
+                </button>
               </div>
             </div>
 
@@ -143,6 +179,13 @@ export default function Index() {
                 <p style={{ fontSize: "14px", color: "#666" }}>
                   Джин, цветок бузины, голубой чай и съедобная золотая пыльца.
                 </p>
+                <button
+                  className="btn-cta"
+                  style={{ marginTop: "16px", width: "100%", background: "var(--primary)", color: "white" }}
+                  onClick={() => handleBuy("1200.00", "Диско Сауэр — Красти Краб")}
+                >
+                  Купить — 1 200 ₽
+                </button>
               </div>
             </div>
           </div>
